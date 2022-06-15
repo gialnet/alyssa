@@ -45,7 +45,7 @@ public class MisEnlacesController {
         return "addnew_success";
     }
 
-    @PostMapping("/links/grid")
+    @PostMapping("/grid")
     public String showForm(Model model, @ModelAttribute("searchBox")SearchBox searchBox, HttpSession session){
 
 
@@ -64,7 +64,7 @@ public class MisEnlacesController {
      * @param session
      * @return
      */
-    @GetMapping("/links/search")
+    @GetMapping("/search")
     public String searchLink(Model model, HttpSession session){
 
         searchBox = SearchBox.builder().build();
