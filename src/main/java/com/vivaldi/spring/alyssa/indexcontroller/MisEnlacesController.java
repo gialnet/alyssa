@@ -52,7 +52,7 @@ public class MisEnlacesController {
     public String showForm(Model model, @ModelAttribute("searchBox")SearchBox searchBox, HttpSession session){
 
 
-        List<MisEnlaces> enlaces = serviceMisEnlaces.processSearch(searchBox.getQueryString());
+        List<MisEnlaces> enlaces = serviceMisEnlaces.processSearch(searchBox.getQueryString(), (String) session.getAttribute("email"));
 
         //enlaces.get(0).
         log.info("number of records '{}'",enlaces.size());

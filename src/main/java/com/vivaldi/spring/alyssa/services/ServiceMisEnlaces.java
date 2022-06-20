@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -59,9 +60,10 @@ public class ServiceMisEnlaces {
      * @param query
      * @return
      */
-    public List<MisEnlaces> processSearch(final String query){
+    public List<MisEnlaces> processSearch(final String query, String email){
 
         List<MisEnlaces> linkMatches = new ArrayList<MisEnlaces>();
+        //String email="antonio.gialnet@gmail.com";
 
         log.info("Search with query {}", query);
 
@@ -83,12 +85,16 @@ public class ServiceMisEnlaces {
 
         // 3. Map searchHits to link list
 
-        linksHits.stream().limit(10).forEach(searchHit->{
+        linksHits.stream().filter(p -> p.getContent().getEmail().contentEquals(email)).limit(10).forEach(searchHit->{
             linkMatches.add(searchHit.getContent());
         });
 
-        return linkMatches;
+        // .filter(p -> p.getContent().getEmail()=="antonio.gialnet@gmail.com" )
+        //List<MisEnlaces> linkMatchesFilter = linkMatches.stream().filter(p -> p.getEmail().contentEquals(email)).collect(Collectors.toList());
+        //System.out.println(linkMatchesFilter.size());
 
+        //return linkMatches.stream().filter(p -> p.getEmail().contentEquals(email)).collect(Collectors.toList());
+        return linkMatches;
 
     }
 }
