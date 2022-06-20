@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +30,9 @@ public class MisEnlacesController {
     @GetMapping("/addnew")
     public String getaddnew(Model model, HttpSession session){
 
+        log.info("addnew getId '{}'", session.getAttribute("email"));
         misEnlaces = MisEnlaces.builder().build();
+        misEnlaces.setEmail((String) session.getAttribute("email"));
         model.addAttribute("MisEnlaces", misEnlaces);
         return "addnew";
     }
@@ -69,7 +72,7 @@ public class MisEnlacesController {
 
         searchBox = SearchBox.builder().build();
 
-        model.addAttribute("searchBox", searchBox);
+        model.addAttribute("SearchBox", searchBox);
 
         return "searchQuery";
     }
