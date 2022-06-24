@@ -43,6 +43,7 @@ public class MisEnlacesController {
         if (misEnlaces==null)
             return "addnew";
 
+        misEnlaces.setEmail((String) session.getAttribute("email"));
         serviceMisEnlaces.SaveLink(misEnlaces);
 
         return "addnew_success";

@@ -42,7 +42,7 @@
         <tbody class="bg-white">
 
           <!--/*@thymesVar id="invoices" type="java"*/-->
-          <tr onclick='getId(this)' th:id="${enlace.getId()}" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100 hover:cursor-pointer" th:each="enlace, stat : ${enlaces}">
+          <tr onclick='getId(this)' th:id="${enlace.getLink()}" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100 hover:cursor-pointer" th:each="enlace, stat : ${enlaces}">
 
             <!-- Primera fila, primera columna -->
 
@@ -86,8 +86,8 @@
 <script>
   function getId(x) {
     //alert(x.id);
-    var url="/?id="+x.id;
-    window.location.assign(url);
+    var url=x.id;
+    window.open(x.id, "_blank");
     //alert("Row index is: " + x.rowIndex);
   }
 </script>
