@@ -77,4 +77,16 @@ public class MisEnlacesController {
 
         return "searchQuery";
     }
+
+    @GetMapping("/browser")
+    public String browser(Model model, HttpSession session){
+
+        List<MisEnlaces> enlaces = serviceMisEnlaces.getPageOfLinks((String) session.getAttribute("email"), 0);
+
+        //enlaces.get(0).
+        log.info("number of records '{}'",enlaces.size());
+        model.addAttribute("enlaces", enlaces);
+
+        return "linksgrid";
+    }
 }

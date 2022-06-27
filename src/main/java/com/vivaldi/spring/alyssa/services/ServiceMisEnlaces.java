@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,6 +32,25 @@ public class ServiceMisEnlaces {
     public ServiceMisEnlaces(MisEnlacesRepo misEnlacesRepo, ElasticsearchOperations elasticsearchOperations) {
         this.misEnlacesRepo = misEnlacesRepo;
         this.elasticsearchOperations = elasticsearchOperations;
+    }
+
+
+    /**
+     *
+     * @param email
+     * @param pageNum
+     * @return
+     */
+    public List<MisEnlaces>  getPageOfLinks(String email, int pageNum){
+
+        List<MisEnlaces> linkMatches = new ArrayList<MisEnlaces>();
+        Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, PageRequest.of( pageNum, 10));
+
+        misEnlaces.stream().forEach(searchHit->{
+            linkMatches.add(searchHit);
+        });
+
+        return linkMatches;
     }
 
     /**
