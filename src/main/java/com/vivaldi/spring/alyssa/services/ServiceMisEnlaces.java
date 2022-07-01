@@ -8,6 +8,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -44,7 +46,13 @@ public class ServiceMisEnlaces {
     public List<MisEnlaces>  getPageOfLinks(String email, int pageNum){
 
         List<MisEnlaces> linkMatches = new ArrayList<MisEnlaces>();
-        Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, PageRequest.of( pageNum, 10));
+
+        Pageable pageable = PageRequest.of(pageNum, 10, Sort.by("_id"));
+
+        //Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, PageRequest.of( pageNum, 10));
+        Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, pageable);
+
+        misEnlaces.getTotalPages();
 
         misEnlaces.stream().forEach(searchHit->{
             linkMatches.add(searchHit);

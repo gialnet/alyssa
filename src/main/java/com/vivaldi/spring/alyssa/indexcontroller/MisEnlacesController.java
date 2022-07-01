@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Slf4j
@@ -78,15 +78,21 @@ public class MisEnlacesController {
         return "searchQuery";
     }
 
-    @GetMapping("/browser")
-    public String browser(Model model, HttpSession session){
+    @GetMapping(value = {"/browser","/browser/{pagNum}" })
+    public String browserPage(@PathVariable(required = false) String pagNum, Model model, HttpSession session){
 
-        List<MisEnlaces> enlaces = serviceMisEnlaces.getPageOfLinks((String) session.getAttribute("email"), 0);
+        int Numpag = 0;
+
+        if (pagNum!=null){
+            Numpag = Integer.parseInt(String.valueOf(pagNum));
+        }
+
+        List<MisEnlaces> enlaces = serviceMisEnlaces.getPageOfLinks((String) session.getAttribute("email"), Numpag);
 
         //enlaces.get(0).
         log.info("number of records '{}'",enlaces.size());
         model.addAttribute("enlaces", enlaces);
 
-        return "linksgrid";
+        return "linksgrid_pageable";
     }
 }
