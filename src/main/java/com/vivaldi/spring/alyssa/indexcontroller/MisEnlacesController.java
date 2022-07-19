@@ -81,7 +81,7 @@ public class MisEnlacesController {
     @GetMapping(value = {"/browser","/browser/{pagNum}" })
     public String browserPage(@PathVariable(required = false) String pagNum, Model model, HttpSession session){
 
-        int Numpag = 0;
+        int Numpag = 1;
 
         if (pagNum!=null){
             Numpag = Integer.parseInt(String.valueOf(pagNum));
@@ -91,6 +91,8 @@ public class MisEnlacesController {
 
         //enlaces.get(0).
         log.info("number of records '{}'",enlaces.size());
+        log.info("number of pages '{}'",session.getAttribute("TotalPages") );
+        log.info("pages number '{}'",session.getAttribute("pageNum") );
         model.addAttribute("enlaces", enlaces);
 
         return "linksgrid_pageable";

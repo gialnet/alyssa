@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,8 @@ public class ServiceMisEnlaces {
     private final ElasticsearchOperations elasticsearchOperations;
     private final String ENLACES_INDEX = "mis-enlaces";
 
+    @Autowired
+    private HttpSession httpSession;
     //private MisEnlaces misEnlaces;
 
     public ServiceMisEnlaces(MisEnlacesRepo misEnlacesRepo, ElasticsearchOperations elasticsearchOperations) {
@@ -47,16 +51,27 @@ public class ServiceMisEnlaces {
 
         List<MisEnlaces> linkMatches = new ArrayList<MisEnlaces>();
 
-        Pageable pageable = PageRequest.of(pageNum, 10, Sort.by("_id"));
+        Pageable pageable = PageRequest.of(pageNum -1, 10, Sort.by("_id"));
 
         //Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, PageRequest.of( pageNum, 10));
         Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, pageable);
 
-        misEnlaces.getTotalPages();
+        if (pageNum > misEnlaces.getTotalPages())
+        {
+            httpSession.setAttribute("pageNum", misEnlaces.getTotalPages() -1);
+        }
+        else httpSession.setAttribute("pageNum", pageNum - 1);
+
+
+        httpSession.setAttribute("TotalPages", misEnlaces.getTotalPages());
+
 
         misEnlaces.stream().forEach(searchHit->{
             linkMatches.add(searchHit);
         });
+
+        //number of records
+        // httpSession.setAttribute("numberOfRecords", linkMatches.size());
 
         return linkMatches;
     }
