@@ -3,7 +3,7 @@
 save your links to favorites web and easy way to remember how to go back it again
 mvn package -DskipTests
 
-scp target\Alyssa-0.0.1-SNAPSHOT.jar dopf:
+scp target\Alyssa-0.0.1-RELEASE.jar dopf:
 
 start_alyssa.sh
 #!/bin/sh

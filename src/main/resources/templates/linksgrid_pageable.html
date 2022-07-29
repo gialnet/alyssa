@@ -9,7 +9,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </head>
-<body>
+
+<!--/*@thymesVar id="CurrentPage" type="java"*/-->
+<body th:onload="SetUpPageNumber()">
+<!--${browsePages.currentPage()}-->
 
 <div class="text-center text-black-500 text-xs" th:insert="fragments/header :: header"></div>
 
@@ -92,7 +95,7 @@
         2
       </a>
       <a href="/browser/3" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-blue-400 hover:text-white">
-        3
+        <span th:text="${TotalPages}"></span>
       </a>
       <a href="#" class="px-4 py-2 font-bold text-gray-500 bg-gray-300 rounded-md hover:bg-blue-400 hover:text-white">
         Next
@@ -108,6 +111,9 @@
     window.open(x.id, "_blank");
 
     //alert("Row index is: " + x.rowIndex);
+  }
+  function SetUpPageNumber(){
+    //alert([[${TotalPages}]]);
   }
 </script>
 </body>

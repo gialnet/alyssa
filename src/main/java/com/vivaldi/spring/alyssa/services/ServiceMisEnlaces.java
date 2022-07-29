@@ -51,7 +51,7 @@ public class ServiceMisEnlaces {
 
         List<MisEnlaces> linkMatches = new ArrayList<MisEnlaces>();
 
-        Pageable pageable = PageRequest.of(pageNum -1, 10, Sort.by("_id"));
+        Pageable pageable = PageRequest.of(pageNum -1, 10, Sort.by("Id2"));
 
         //Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, PageRequest.of( pageNum, 10));
         Page<MisEnlaces> misEnlaces = misEnlacesRepo.findAllByEmail(email, pageable);

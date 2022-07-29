@@ -1,5 +1,6 @@
 package com.vivaldi.spring.alyssa.indexcontroller;
 
+import com.vivaldi.spring.alyssa.data.BrowsePages;
 import com.vivaldi.spring.alyssa.data.MisEnlaces;
 import com.vivaldi.spring.alyssa.data.SearchBox;
 import com.vivaldi.spring.alyssa.services.ServiceMisEnlaces;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -20,6 +22,8 @@ public class MisEnlacesController {
 
     private MisEnlaces misEnlaces;
     private SearchBox searchBox;
+
+    private BrowsePages browsePages;
 
     private final ServiceMisEnlaces serviceMisEnlaces;
 
@@ -44,6 +48,7 @@ public class MisEnlacesController {
             return "addnew";
 
         misEnlaces.setEmail((String) session.getAttribute("email"));
+        misEnlaces.setId2(UUID.randomUUID().toString());
         serviceMisEnlaces.SaveLink(misEnlaces);
 
         return "addnew_success";
@@ -93,7 +98,11 @@ public class MisEnlacesController {
         log.info("number of records '{}'",enlaces.size());
         log.info("number of pages '{}'",session.getAttribute("TotalPages") );
         log.info("pages number '{}'",session.getAttribute("pageNum") );
+
         model.addAttribute("enlaces", enlaces);
+        model.addAttribute("TotalPages", (Integer) session.getAttribute("TotalPages"));
+        model.addAttribute("CurrentPage", (Integer) session.getAttribute("pageNum"));
+        model.addAttribute("NumberOfRecords", enlaces.size());
 
         return "linksgrid_pageable";
     }
